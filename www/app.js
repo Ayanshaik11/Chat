@@ -1,6 +1,6 @@
 // ⚠️ Set this to your deployed server's URL before building the APK.
 // The APK is just a WebView shell — it needs a real server to talk to.
-const SERVER_URL = "https://YOUR-SERVER-DOMAIN.example.com";
+const SERVER_URL = "https://chat-4-tc37.onrender.com";
 
 const pairScreen = document.getElementById("screen-pair");
 const chatScreen = document.getElementById("screen-chat");
