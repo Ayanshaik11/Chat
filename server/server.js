@@ -12,14 +12,17 @@ const io = new Server(server, {
   cors: { origin: "*" }
 });
 
-// code -> array of waiting socket ids (max 1 waiting at a time)
 const waitingByCode = new Map();
-// socketId -> { room, code }
 const socketInfo = new Map();
 
 io.on("connection", (socket) => {
+  console.log(`[connect] ${socket.id}`);
+
   socket.on("join_code", ({ code }) => {
+    console.log(`[join_code] ${socket.id} sent code "${code}"`);
+
     if (!/^\d{4}$/.test(String(code))) {
+      console.log(`[invalid code] ${socket.id} sent "${code}"`);
       socket.emit("connect_error", { message: "Invalid code" });
       return;
     }
@@ -27,7 +30,6 @@ io.on("connection", (socket) => {
     const waitingSocketId = waitingByCode.get(code);
 
     if (waitingSocketId && waitingSocketId !== socket.id && io.sockets.sockets.get(waitingSocketId)) {
-      // Match found — pair them into a room
       const room = `room_${code}_${Date.now()}`;
       waitingByCode.delete(code);
 
@@ -38,22 +40,28 @@ io.on("connection", (socket) => {
       socketInfo.set(socket.id, { room, code });
       socketInfo.set(waitingSocketId, { room, code });
 
+      console.log(`[paired] code "${code}" -> room ${room} (${socket.id} + ${waitingSocketId})`);
       io.to(room).emit("paired", { room });
     } else {
-      // No one waiting with this code yet — wait
       waitingByCode.set(code, socket.id);
       socketInfo.set(socket.id, { room: null, code });
+      console.log(`[waiting] code "${code}" now waiting on ${socket.id}`);
       socket.emit("waiting");
     }
   });
 
   socket.on("chat_message", ({ text }) => {
     const info = socketInfo.get(socket.id);
-    if (!info || !info.room) return;
+    if (!info || !info.room) {
+      console.log(`[chat_message ignored] ${socket.id} has no room yet`);
+      return;
+    }
+    console.log(`[chat_message] room ${info.room}: "${text}"`);
     socket.to(info.room).emit("chat_message", { text });
   });
 
   socket.on("disconnect", () => {
+    console.log(`[disconnect] ${socket.id}`);
     const info = socketInfo.get(socket.id);
     if (info) {
       if (info.room) {
