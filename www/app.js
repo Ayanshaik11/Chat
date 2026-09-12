@@ -39,7 +39,7 @@ connectBtn.addEventListener("click", () => {
   statusMsg.textContent = "Connecting...";
   connectBtn.disabled = true;
 
-  socket = io(SERVER_URL, { transports: ["websocket"] });
+  socket = io(SERVER_URL, { transports: ["websocket" , "polling"] });
 
   socket.on("connect", () => {
     socket.emit("join_code", { code });
