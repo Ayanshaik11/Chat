@@ -1,0 +1,17 @@
+{
+  "name": "pairchat",
+  "version": "1.0.0",
+  "description": "4-digit code pairing chat, packaged as a native Android APK via Capacitor",
+  "scripts": {
+    "cap:add-android": "npx cap add android || true",
+    "cap:sync": "npx cap sync android",
+    "cap:open": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/core": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}
