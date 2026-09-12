@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>PairChat</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="screen-pair" class="screen active">
+    <div class="card">
+      <h1>PairChat</h1>
+      <p class="subtitle">Enter a 4-digit code. When two people enter the same code, you're connected.</p>
+      <input id="codeInput" type="tel" maxlength="4" inputmode="numeric" placeholder="0000" autocomplete="off" />
+      <button id="connectBtn">Connect</button>
+      <p id="statusMsg" class="status"></p>
+    </div>
+  </div>
+
+  <div id="screen-chat" class="screen">
+    <div class="chat-header">
+      <span id="roomLabel">Room ----</span>
+      <button id="leaveBtn">Leave</button>
+    </div>
+    <div id="messages" class="messages"></div>
+    <div class="composer">
+      <input id="msgInput" type="text" placeholder="Type a message" autocomplete="off" />
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
